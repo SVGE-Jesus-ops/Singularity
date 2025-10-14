@@ -1,0 +1,18 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"yourmodule/quantumrng"
+)
+
+type Block struct {
+	Index     int
+	Data      string
+	Nonce     string
+	PrevHash  string
+	BlockHash string
+}
+
+func CreateBlock(index int, data string, prevHash string) (*Block, error) {
+	rngs, err := quantumrng.FetchQuantumHex32(1)
