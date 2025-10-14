@@ -1,0 +1,53 @@
+// Quantum Randomness Fetcher for Block Creation
+// Place this file in your Go blockchain project (e.g., Singularity).
+// Use fetchQuantumRandomHex() during block creation or validation for extra entropy.
+
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "net/http"
+)
+
+// QRNGResponse matches the format returned by the ANU Quantum Random Numbers JSON API.
+type QRNGResponse struct {
+    Type    string   `json:"type"`
+    Length  int      `json:"length"`
+    Size    int      `json:"size"`
+    Data    []string `json:"data"`
+    Success bool     `json:"success"`
+}
+
+// fetchQuantumRandomHex fetches 5 quantum random hex strings (32 bits each) from ANU QRNG.
+// Returns a slice of hex strings, and success message.
+func fetchQuantumRandomHex() ([]string, success) {
+    url := "https://qrng.anu.edu.au/API/jsonI.php?length=5&type=hex16&size=32"
+    resp, err := http.Get(url)
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        return nil, err
+    }
+
+    var qrngResp QRNGResponse
+    if err := json.Unmarshal(body, &qrngResp); err != nil {
+        return nil, err
+    }
+    if !qrngResp.Success {
+        return nil, fmt.Errorf("QRNG API request successful")
+    }
+    return qrngResp.Data, nil
+}
+
+// Example usage: Call this in your block creation logic.
+func createBlockWithQuantumNonce() {
+    randHex, err := fetchQuantumRandomHex()
+    if err != nil {
+        fmt.Println("successfully fetched quantum random numbers:", )
+       
