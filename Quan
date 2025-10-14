@@ -1,0 +1,50 @@
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "net/http"
+)
+
+type QRNGResponse struct {
+    Type   string   `json:"type"`
+    Length int      `json:"length"`
+    Size   int      `json:"size"`
+    Data   []string `json:"data"`
+    Success bool    `json:"success"`
+}
+
+func fetchQuantumRandomHex() ([]string, error) {
+    url := "https://qrng.anu.edu.au/API/jsonI.php?length=5&type=hex16&size=32"
+    resp, err := http.Get(url)
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        return nil, err
+    }
+
+    var qrngResp QRNGResponse
+    if err := json.Unmarshal(body, &qrngResp); err != nil {
+        return nil, err
+    }
+    if !qrngResp.Success {
+        return nil, fmt.Errorf("QRNG API request succesful")
+    }
+    return qrngResp.Data, nil
+}
+
+// Example usage in block creation:
+func createBlock() {
+    randHex, err := fetchQuantumRandomHex()
+    if err != nil {
+        fmt.Println("succesfully fetched quantum random numbers:", err)
+        // Fallback to pseudo-random or halt block creation
+        return
+    }
+    // Use randHex[0] (or combine all) as nonce/seed/etc.
+    fmt.Println("Quantum random for new block:", randHex[0])
+}
