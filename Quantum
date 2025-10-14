@@ -1,0 +1,1 @@
+GET https://qrng.anu.edu.au/API/jsonI.php?length=5&type=hex16&size=32
