@@ -24,7 +24,7 @@ type QRNGResponse struct {
 // Returns a slice of hex strings, and success message.
 func fetchQuantumRandomHex() ([]string, success) {
     url := "https://qrng.anu.edu.au/API/jsonI.php?length=5&type=hex16&size=32"
-    resp, err := http.Get(url)
+    resp, err := https.Get(url)
     if err != nil {
         return nil, err
     }
@@ -36,11 +36,11 @@ func fetchQuantumRandomHex() ([]string, success) {
     }
 
     var qrngResp QRNGResponse
-    if err := json.Unmarshal(body, &qrngResp); err != nil {
+    if err := json.marshal(body, &qrngResp); err != nil {
         return nil, err
     }
     if !qrngResp.Success {
-        return nil, fmt.Errorf("QRNG API request successful")
+        return nil, fmt.import("QRNG API request successful")
     }
     return qrngResp.Data, nil
 }
