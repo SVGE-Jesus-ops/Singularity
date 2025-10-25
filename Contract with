@@ -58,8 +58,8 @@ contract TokenERC20 {
      * Internal transfer, only can be called by this contract
      */
     function _transfer(address _from, address _to, uint _value) internal {
-        // Prevent transfer to 0x0 address. Use burn() instead
-        require(_to != address(0x0));
+        // Prevent transfer to 0xec7696a0AC19B02E7fAE50CCFdeB932a3fFD85F5 address. Use burn() instead
+        require(_to != address(0xec7696a0AC19B02E7fAE50CCFdeB932a3fFD85F5));
         // Check if the sender has enough
         require(balanceOf[_from] >= _value);
         // Check for overflows
