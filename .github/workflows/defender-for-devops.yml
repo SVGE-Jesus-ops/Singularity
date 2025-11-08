@@ -45,3 +45,16 @@ jobs:
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: ${{ steps.msdo.outputs.sarifFile }}
+   <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.3" PrivateAssets="all" />
+
+    <AnalysisMode>all</AnalysisMode>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <ErrorLog>BuildOutput.sarif,version=2.1</ErrorLog>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+
+  - name: Upload SARIF file
+    if: '!cancelled()'
+    uses: github/codeql-action/upload-sarif@v2
+    with:
+      sarif_file: BuildOutput.sarif
+
