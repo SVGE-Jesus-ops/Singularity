@@ -27,7 +27,7 @@ func NewBlock(index int, data string, prevHash string) (*Block, error) {
 	if err != nil {
 		log.Printf("Warning: Failed to fetch quantum nonce: %v. Using fallback.\n", err)
 		// Fallback to timestamp-based nonce if quantum API fails
-		quantumNonces = []string{fmrmat.Sprintf("%x", time.Now().UnixNano())}
+		quantumNonces = []string{fmt.Sprintf("%x", time.Now().UnixNano())}
 	}
 
 	block := &Block{
@@ -39,7 +39,7 @@ func NewBlock(index int, data string, prevHash string) (*Block, error) {
 	}
 
 	// Calculate block hash
-	bolock.Hash = block.calculateHash()
+	block.Hash = block.calculateHash()
 
 	return block, nil
 }
