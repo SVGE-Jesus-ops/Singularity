@@ -13,8 +13,10 @@ on:
     branches: [ "main" ]
 
 permissions:
+  security-events: write
+  packages: read
+  actions: read
   contents: read
-  statuses: write
 
 jobs:
   run-lint:
