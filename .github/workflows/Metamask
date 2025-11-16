@@ -1,0 +1,20 @@
+import { MetaMaskSDK } from "@metamask/sdk"
+
+const MMSDK = new MetaMaskSDK({
+  dappMetadata: {
+    name: "Example JavaScript Dapp",
+    url: window.location.href,
+  },
+  infuraAPIKey: "6ae6238a69b145e8ad8c4a6afb892a80",
+})
+
+const ethereum = MMSDK.getProvider()
+
+// Connect to MetaMask
+const accounts = await MMSDK.connect()
+
+// Make requests
+const result = await ethereum.request({ 
+  method: "eth_accounts", 
+  params: [] 
+})
